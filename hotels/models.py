@@ -8,8 +8,8 @@ class Hotel(models.Model):
 	price_per_night = models.DecimalField(max_digits=10, decimal_places=3)
 
 	def __str__(self):
-		return name
-
+		# return name
+		return "%s" % (str (self.name))
 
 class Booking(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="bookings")

@@ -4,10 +4,12 @@ from rest_framework import serializers
 
 from .models import Hotel, Booking
 
+from django.contrib.auth.models import User 
+
 
 class HotelsListSerializer(serializers.ModelSerializer):
 	details = serializers.HyperlinkedIdentityField(
-		view_name = "hotel-detail",
+		view_name = "hotel-details",
 		lookup_field = "id",
 		lookup_url_kwarg = "hotel_id"
 		)
@@ -24,7 +26,7 @@ class HotelDetailsSerializer(serializers.ModelSerializer):
 		)
 	class Meta:
 		model = Hotel
-		fields = ["name", "location", "price", "book"]
+		fields = ["name", "location", "price_per_night", "book"]
 
 
 class BookHotelSerializer(serializers.ModelSerializer):
@@ -47,7 +49,7 @@ class BookingDetailsSerializer(serializers.ModelSerializer):
 		)
 	class Meta:
 		model = Booking
-		fields = ["hotel", "check_in", 'number_of_nights', 'modify']
+		fields = ["hotel", "check_in", 'number_of_nights', 'modify', 'cancel']
 
 
 class PastBookingDetailsSerializer(serializers.ModelSerializer):
@@ -64,7 +66,7 @@ class UserSerializer(serializers.ModelSerializer):
 		model = User
 		fields = ["username", "name", "email", "past_bookings"]
 
-	def name(self, obj):
+	def get_name(self, obj):
 		return "%s %s"%(obj.first_name, obj.last_name)
 
 	def get_past_bookings(self, obj):
